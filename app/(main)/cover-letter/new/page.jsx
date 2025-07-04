@@ -1,0 +1,30 @@
+import React from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import GenerateCoverLetter from "../_components/GenerateCoverLetter";
+const NewCoverLetter = () => {
+  return (
+    <div className="container mx-auto py-4">
+      <div className="flex flex-col gap-2">
+        <Link href="/cover-letter">
+          <Button variant="link">
+            <ArrowLeft className="h-4 w-4" />
+            Back to cover letters
+          </Button>
+        </Link>
+        <div className="pb-6">
+          <h1 className="text-6xl font-bold bg-gradient-to-b from-gray-400 via-gray-200 to-gray-600 text-transparent tracking-tighter bg-clip-text pb-4 pr-2">
+            Build Cover Letter
+          </h1>
+          <p className="text-muted-foreground">
+            Build a cover letter for your job application
+          </p>
+        </div>
+      </div>
+      <GenerateCoverLetter />
+    </div>
+  );
+};
+
+export default NewCoverLetter;
