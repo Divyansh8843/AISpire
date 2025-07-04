@@ -3,7 +3,7 @@ import { getIndustryInsights } from "@/actions/dashboard";
 import DashboardView from "./_components/DashboardView";
 import { redirect } from "next/navigation";
 import { getUserOnboardingStatus } from "@/actions/user";
-const DashboardPage = async ({ children }) => {
+const DashboardPage = async () => {
   const { isOnboarded } = await getUserOnboardingStatus();
   const insights = await getIndustryInsights();
   if (!isOnboarded) {
