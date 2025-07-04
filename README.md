@@ -273,4 +273,4 @@ MIT
 
 ---
 
-**Made with ❤️ by the AIspire Team**
+**Made with ❤️ by Divyansh Agrawal **
