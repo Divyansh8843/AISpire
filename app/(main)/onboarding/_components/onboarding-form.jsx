@@ -73,7 +73,7 @@ const OnboardingForm = ({ industries }) => {
     <div className="flex items-center justify-center">
       <Card className="w-full max-w-lg mt-10 mx-2 bg-background">
         <CardHeader>
-          <CardTitle className="text-4xl font-bold bg-gradient-to-b from-gray-400 via-gray-200 to-gray-600 text-transparent tracking-tighter bg-clip-text pb-2 mb-4 pr-2">
+          <CardTitle className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-b from-gray-400 via-gray-200 to-gray-600 text-transparent tracking-tighter bg-clip-text pb-2 mb-4 pr-2 text-center">
             Complete Your Profile
           </CardTitle>
           <CardDescription>
@@ -94,12 +94,12 @@ const OnboardingForm = ({ industries }) => {
                   setValue("subIndustry", "");
                 }}
               >
-                <SelectTrigger id="industry">
+                <SelectTrigger id="industry" className="w-full">
                   <SelectValue placeholder="Select an  Industry" />
                 </SelectTrigger>
                 <SelectContent>
                   {industries.map((industry) => (
-                    <SelectItem key={industry.id} value={industry.id}>
+                    <SelectItem key={industry.id} value={industry.id} className="w-full">
                       {industry.name}
                     </SelectItem>
                   ))}
@@ -117,12 +117,12 @@ const OnboardingForm = ({ industries }) => {
                 <Select
                   onValueChange={(value) => setValue("subIndustry", value)}
                 >
-                  <SelectTrigger id="subIndustry">
+                  <SelectTrigger id="subIndustry" className="w-full">
                     <SelectValue placeholder="Select an subIndustry" />
                   </SelectTrigger>
                   <SelectContent>
                     {selectedIndustry?.subIndustries.map((subind) => (
-                      <SelectItem key={subind} value={subind}>
+                      <SelectItem key={subind} value={subind} className="w-full">
                         {subind}
                       </SelectItem>
                     ))}
@@ -143,6 +143,7 @@ const OnboardingForm = ({ industries }) => {
                 min="0"
                 max="50"
                 placeholder="Enter your Experience in Years"
+                className="w-full"
                 {...register("experience")}
               />
               {errors.experience && (
@@ -156,6 +157,7 @@ const OnboardingForm = ({ industries }) => {
               <Input
                 id="skills"
                 placeholder="e.g. Full Stack Development, Data Analysis, Time Management"
+                className="w-full"
                 {...register("skills")}
               />
               <p className="text-sm text-muted-foreground">
@@ -169,7 +171,7 @@ const OnboardingForm = ({ industries }) => {
               <Label htmlFor="bio">Professional Bio</Label>
               <Textarea
                 id="bio"
-                className="h-32"
+                className="h-32 w-full"
                 placeholder="Tell us about your professional background and interests"
                 {...register("bio")}
               />

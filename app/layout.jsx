@@ -6,11 +6,19 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import ScrollToTop from "@/components/ScrollToTop";
+import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import AIChatbot from "@/components/AIChatbot";
+// import ClientToaster from "@/components/ClientToaster";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "AIspire",
   description: "Inspiring careers through AI.",
+  icons: {
+    icon: "/favicon.ico",
+  },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({ children }) {
@@ -21,17 +29,22 @@ export default function RootLayout({ children }) {
       }}
     >
       <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.className}`}>
+        <body className={`${inter.className} overflow-x-hidden`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
-            <Header />
-            <main className="min-h-screen">{children}</main>
-            <Toaster richColors />
-            <Footer />
+            <SmoothScrollProvider>
+              <Header />
+              <main className="min-h-screen">{children}</main>
+              <Toaster richColors />
+              {/* <ClientToaster /> */}
+              <Footer />
+              <ScrollToTop />
+              <AIChatbot />
+            </SmoothScrollProvider>
           </ThemeProvider>
         </body>
       </html>

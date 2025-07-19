@@ -1,6 +1,5 @@
 "use server";
 
-import next from "next";
 import { db } from "../lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -51,6 +50,10 @@ export async function getIndustryInsights() {
     },
   });
   if (!user) throw new Error("User not found");
+  // Guard: user.industry must not be null
+  if (!user.industry) {
+    throw new Error("User industry is not set. Cannot generate insights.");
+  }
   if (!user.industryInsight) {
     const insights = await generateAIInsights(user.industry);
     const industryInsight = await db.IndustryInsight.create({

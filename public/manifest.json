@@ -1,0 +1,21 @@
+{
+  "name": "AIspire",
+  "short_name": "AIspire",
+  "description": "Inspiring careers through AI.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#18181b",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "/icon-small.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-large.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+} 

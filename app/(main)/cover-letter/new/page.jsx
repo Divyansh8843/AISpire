@@ -13,8 +13,8 @@ const NewCoverLetter = () => {
             Back to cover letters
           </Button>
         </Link>
-        <div className="pb-6">
-          <h1 className="text-6xl font-bold bg-gradient-to-b from-gray-400 via-gray-200 to-gray-600 text-transparent tracking-tighter bg-clip-text pb-4 pr-2">
+        <div className="pb-6 text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-b from-gray-400 via-gray-200 to-gray-600 text-transparent tracking-tighter bg-clip-text pb-4 pr-2">
             Build Cover Letter
           </h1>
           <p className="text-muted-foreground">

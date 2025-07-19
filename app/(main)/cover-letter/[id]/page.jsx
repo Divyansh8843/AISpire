@@ -17,7 +17,7 @@ const CoverLetter = async ({ params }) => {
               Back to Cover Letters
             </Button>
           </Link>
-          <h1 className="text-6xl font-bold bg-gradient-to-b from-gray-400 via-gray-200 to-gray-600 text-transparent tracking-tighter bg-clip-text pb-4 pr-2">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-b from-gray-400 via-gray-200 to-gray-600 text-transparent tracking-tighter bg-clip-text pb-4 pr-2 text-center">
             {coverLetter?.jobTitle} at {coverLetter?.companyName}
           </h1>
         </div>

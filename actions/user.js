@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "../lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { generateAIInsights } from "./dashboard.js";
 export async function updateUser(data) {
   console.log("Updating user with data:", data);
@@ -20,13 +20,13 @@ export async function updateUser(data) {
   console.log("user & data", user, data);
   if (!user) throw new Error("User not found");
   try {
-    const result = await db.$transaction(
-      async (tx) => {
-        let industryInsight = await tx.IndustryInsight.findUnique({
+   
+    let industryInsight = await db.IndustryInsight.findUnique({
           where: {
             industry: data.industry,
           },
         });
+   
         if (!industryInsight) {
           const insights = await generateAIInsights(data.industry);
           console.log("insights at update", insights);
@@ -38,8 +38,7 @@ export async function updateUser(data) {
             },
           });
         }
-        console.log("new industryInght", industryInsight);
-        const updatedUser = await tx.user.update({
+    const updatedUser = await db.user.update({
           where: {
             id: user.id,
           },
@@ -51,13 +50,7 @@ export async function updateUser(data) {
           },
         });
         console.log("user became updated", updatedUser);
-        return { updatedUser, industryInsight };
-      },
-      {
-        timeout: 10000,
-      }
-    );
-    return { success: true, ...result };
+    return { success: true, updatedUser, industryInsight };
   } catch (err) {
     console.error("Error updating user:", err.message);
     throw new Error(`Failed to update user + ${err.message}`);
@@ -65,10 +58,17 @@ export async function updateUser(data) {
 }
 
 export async function getUserOnboardingStatus() {
-  const { userId } = await auth();
-  if (!userId) throw new Error("User not authenticated");
   try {
-    const user = await db.user.findUnique({
+  const { userId } = await auth();
+    console.log("getUserOnboardingStatus - User ID:", userId);
+    
+    if (!userId) {
+      console.log("No user ID found");
+      return { isOnboarded: false };
+    }
+    
+    // First, try to find the user
+    let user = await db.user.findUnique({
       where: {
         clerkUserId: userId,
       },
@@ -76,12 +76,40 @@ export async function getUserOnboardingStatus() {
         industry: true,
       },
     });
-    if (!user) throw new Error("User not found");
+    
+    console.log("Found user in DB:", user);
+    
+    // If user doesn't exist, create them
+    if (!user) {
+      console.log("User not found, creating new user...");
+      const clerkUser = await currentUser();
+      
+      if (clerkUser) {
+        const name = `${clerkUser.firstName || ''} ${clerkUser.lastName || ''}`.trim();
+        user = await db.user.create({
+          data: {
+            clerkUserId: userId,
+            name: name || 'User',
+            email: clerkUser.emailAddresses[0]?.emailAddress || '',
+            imageUrl: clerkUser.imageUrl,
+          },
+          select: {
+            industry: true,
+          },
+        });
+        console.log("Created new user:", user);
+      }
+    }
+    
+    // Check if user has completed onboarding
+    const isOnboarded = user && user.industry && user.industry.trim() !== '';
+    console.log("Onboarding status:", isOnboarded, "Industry:", user?.industry);
+    
     return {
-      isOnboarded: !!user?.industry,
+      isOnboarded: isOnboarded,
     };
   } catch (err) {
     console.error("Error fetching user onboarding status:", err.message);
-    throw new Error("Failed to fetch user onboarding status");
+    return { isOnboarded: false };
   }
 }

@@ -36,6 +36,8 @@ const EntryForm = ({ type, entries, onChange }) => {
     error: improveError,
   } = useFetch(improveResume);
   const [isAdding, setIsAdding] = useState(false);
+  // Get today's date in yyyy-MM format
+  const today = format(new Date(), "yyyy-MM");
   const {
     control,
     register,
@@ -49,8 +51,8 @@ const EntryForm = ({ type, entries, onChange }) => {
     defaultValues: {
       title: "",
       organization: "",
-      startDate: "",
-      endDate: "",
+      startDate: today,
+      endDate: today,
       description: "",
       current: false,
     },
@@ -78,6 +80,14 @@ const EntryForm = ({ type, entries, onChange }) => {
       return;
     }
     await improveContentFn({ current: description, type: type.toLowerCase() });
+  };
+  const handleCurrentChange = (e) => {
+    setValue("current", e.target.checked);
+    if (e.target.checked) {
+      setValue("endDate", today);
+    } else {
+      setValue("endDate", today);
+    }
   };
   useEffect(() => {
     if (improvedContent && !isimprovingContent) {
@@ -168,6 +178,7 @@ const EntryForm = ({ type, entries, onChange }) => {
                 <Input
                   error={errors.endDate}
                   disabled={current}
+                  value={current ? today : undefined}
                   type="month"
                   {...register("endDate")}
                 />
@@ -183,12 +194,7 @@ const EntryForm = ({ type, entries, onChange }) => {
                 type="checkbox"
                 id="current"
                 {...register("current")}
-                onChange={(e) => {
-                  setValue("current", e.target.checked);
-                  if (e.target.checked) {
-                    setValue("endDate", "");
-                  }
-                }}
+                onChange={handleCurrentChange}
               />
               <label htmlFor="current">Current {type}</label>
             </div>

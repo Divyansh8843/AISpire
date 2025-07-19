@@ -130,22 +130,20 @@ const ResumeBuilder = ({ initialContent }) => {
   };
   return (
     <div>
-      <h1 className="text-6xl font-bold bg-gradient-to-b from-gray-400 via-gray-200 to-gray-600 text-transparent tracking-tighter bg-clip-text pb-4 pr-2">
-        Resume Builder
-      </h1>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <div className="flex flex-row items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <TabsList>
               <TabsTrigger value="edit">Form</TabsTrigger>
               <TabsTrigger value="preview">Markdown</TabsTrigger>
             </TabsList>
           </div>
-          <div className="space-x-2">
+          <div className="flex flex-col sm:flex-row gap-2 sm:space-x-2 w-full sm:w-auto">
             <Button
               variant="destructive"
               onClick={onSubmit}
               disabled={savingResume}
+              className="w-full sm:w-auto"
             >
               {savingResume ? (
                 <>

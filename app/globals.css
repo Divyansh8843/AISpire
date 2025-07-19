@@ -44,6 +44,7 @@
 }
 
 :root {
+  --vh: 100vh;
   --radius: 0.625rem;
   --background: rgb(255, 255, 255);
   --foreground: rgb(37, 37, 37);
@@ -119,6 +120,8 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+  }
 }
 
 .grid-background {
@@ -127,25 +130,18 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0.1) 1px,
-      transparent 1px
-    ),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 50px 50px;
   pointer-events: none;
   z-index: -1;
 }
 
-.grid-background::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, transparent, rgba(0, 0, 0, 0.9));
+.dark .grid-background {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
 .hero-image-wrapper {
@@ -160,4 +156,8 @@
 
 .hero-image.scrolled {
   transform: rotateX(0deg) scale(1) translateY(40px);
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
 }

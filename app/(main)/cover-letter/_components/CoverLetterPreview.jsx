@@ -8,5 +8,4 @@ const CoverLetterPreview = ({ content }) => {
     </div>
   );
 };
-
 export default CoverLetterPreview;
