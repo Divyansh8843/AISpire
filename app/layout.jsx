@@ -16,7 +16,7 @@ export const metadata = {
   title: "AIspire",
   description: "Inspiring careers through AI.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "./favicon.ico",
   },
   manifest: "/manifest.json",
 };

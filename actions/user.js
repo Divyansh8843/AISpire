@@ -4,10 +4,7 @@ import { db } from "../lib/prisma";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { generateAIInsights } from "./dashboard.js";
 export async function updateUser(data) {
-  console.log("Updating user with data:", data);
-  console.log("industry is", data.industry);
   const { userId } = await auth();
-  console.log(userId);
   if (!userId) throw new Error("User not authenticated");
   const user = await db.user.findUnique({
     where: {
@@ -17,7 +14,6 @@ export async function updateUser(data) {
       industryInsight: true,
     },
   });
-  console.log("user & data", user, data);
   if (!user) throw new Error("User not found");
   try {
    
@@ -29,7 +25,6 @@ export async function updateUser(data) {
    
         if (!industryInsight) {
           const insights = await generateAIInsights(data.industry);
-          console.log("insights at update", insights);
           industryInsight = await db.IndustryInsight.create({
             data: {
               industry: data.industry,
@@ -49,7 +44,6 @@ export async function updateUser(data) {
             skills: data.skills,
           },
         });
-        console.log("user became updated", updatedUser);
     return { success: true, updatedUser, industryInsight };
   } catch (err) {
     console.error("Error updating user:", err.message);
@@ -60,10 +54,8 @@ export async function updateUser(data) {
 export async function getUserOnboardingStatus() {
   try {
   const { userId } = await auth();
-    console.log("getUserOnboardingStatus - User ID:", userId);
     
     if (!userId) {
-      console.log("No user ID found");
       return { isOnboarded: false };
     }
     
@@ -77,11 +69,8 @@ export async function getUserOnboardingStatus() {
       },
     });
     
-    console.log("Found user in DB:", user);
-    
     // If user doesn't exist, create them
     if (!user) {
-      console.log("User not found, creating new user...");
       const clerkUser = await currentUser();
       
       if (clerkUser) {
@@ -97,13 +86,11 @@ export async function getUserOnboardingStatus() {
             industry: true,
           },
         });
-        console.log("Created new user:", user);
       }
     }
     
     // Check if user has completed onboarding
     const isOnboarded = user && user.industry && user.industry.trim() !== '';
-    console.log("Onboarding status:", isOnboarded, "Industry:", user?.industry);
     
     return {
       isOnboarded: isOnboarded,

@@ -34,7 +34,6 @@ export const generateAIInsights = async (industry) => {
   const response = result.response;
   const text = response.text();
   const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-  console.log("gemini text", cleanedText);
   return JSON.parse(cleanedText);
 };
 

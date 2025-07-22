@@ -1,1 +1,6 @@
-lib/generated/prisma/*
+lib/generated/prisma/
+dist/
+build/
+
+# Node modules
+node_modules/
