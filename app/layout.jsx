@@ -10,7 +10,6 @@ import ScrollToTop from "@/components/ScrollToTop";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
 import AIChatbot from "@/components/AIChatbot";
 // import ClientToaster from "@/components/ClientToaster";
-
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "AIspire",
