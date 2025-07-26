@@ -3,7 +3,6 @@ import { db } from "../lib/prisma";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { auth } from "@clerk/nextjs/server";
 import { checkUserProfile } from "../lib/check";
-import { validateEnvironment } from "../lib/validate-env";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({
@@ -12,8 +11,6 @@ const model = genAI.getGenerativeModel({
 
 export async function generateQuiz() {
   try {
-    // Validate environment
-    validateEnvironment();
     
     const { userId } = await auth();
     if (!userId) throw new Error("User not authenticated");
@@ -66,8 +63,6 @@ export async function generateQuiz() {
 
 export async function saveQuizResult({ questions, answers, score }) {
   try {
-    // Validate environment
-    validateEnvironment();
     
     const { userId } = await auth();
     if (!userId) throw new Error("User not authenticated");
@@ -136,7 +131,6 @@ export async function saveQuizResult({ questions, answers, score }) {
 
 export async function getAssesment() {
   try {
-    validateEnvironment();
     
     const { userId } = await auth();
     if (!userId) throw new Error("User not authenticated");

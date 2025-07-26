@@ -7,9 +7,11 @@ const path = require('path');
 console.log('🔧 Setting up Prisma for Vercel deployment...');
 
 try {
-  // Generate Prisma client
+  // Generate Prisma client with proper binary targets
   console.log('📦 Generating Prisma client...');
-  execSync('npx prisma generate', { stdio: 'inherit' });
+  execSync('npx prisma generate', { 
+    stdio: 'inherit'
+  });
   
   // Check if we're in production
   if (process.env.NODE_ENV === 'production') {

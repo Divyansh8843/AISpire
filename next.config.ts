@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'img.clerk.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'media.licdn.com',
+      },
     ],
   },
   onDemandEntries: { maxInactiveAge: 25 * 1000, pagesBufferLength: 2, },

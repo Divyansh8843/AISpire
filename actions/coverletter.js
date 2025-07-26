@@ -3,10 +3,6 @@ import { db } from "../lib/prisma";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { auth } from "@clerk/nextjs/server";
 import { checkUserProfile } from "../lib/check";
-import { validateEnvironment, validateEnvironmentPartial } from "../lib/validate-env";
-
-// Use the correct publishable key for Clerk
-const clerkPublishableKey = process.env.CLERK_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({
@@ -15,8 +11,6 @@ const model = genAI.getGenerativeModel({
 
 export async function createCoverLetter(data) {
   try {
-    // Validate environment for AI operations
-    validateEnvironment();
     
     const { userId } = await auth();
     if (!userId) throw new Error("User not authenticated");
@@ -80,10 +74,6 @@ export async function createCoverLetter(data) {
 
 export async function getCoverLetter(id) {
   try {
-    // Use partial validation for read operations
-    if (!validateEnvironmentPartial()) {
-      throw new Error("Database connection not available");
-    }
     
     const { userId } = await auth();
     if (!userId) throw new Error("User not authenticated");
@@ -118,10 +108,6 @@ export async function getCoverLetter(id) {
 
 export async function getCoverletters() {
   try {
-    // Use partial validation for read operations
-    if (!validateEnvironmentPartial()) {
-      throw new Error("Database connection not available");
-    }
     
     const { userId } = await auth();
     if (!userId) throw new Error("User not authenticated");
@@ -152,10 +138,6 @@ export async function getCoverletters() {
 
 export async function deleteCoverLetter(id) {
   try {
-    // Use partial validation for delete operations
-    if (!validateEnvironmentPartial()) {
-      throw new Error("Database connection not available");
-    }
     
     const { userId } = await auth();
     if (!userId) throw new Error("User not authenticated");
