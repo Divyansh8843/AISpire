@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { jobSchema } from "../../../lib/schema";
+import { jobSchema } from "@/app/lib/schema";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { generateCoverLetter } from "@/actions/coverletter";

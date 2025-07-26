@@ -23,7 +23,7 @@ import useFetch from "@/hooks/user-fetch";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import EntryForm from "./entry-form";
-import { contactSchema, entrySchema, resumeSchema } from "../../../lib/schema";
+import { contactSchema, entrySchema, resumeSchema } from "@/app/lib/schema";
 import { Textarea } from "@/components/ui/textarea";
 import { useUser } from "@clerk/nextjs";
 const ResumeBuilder = ({ initialContent }) => {

@@ -3,6 +3,16 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import GenerateCoverLetter from "../_components/GenerateCoverLetter";
+import { Suspense } from "react";
+import ErrorBoundary from "@/components/ErrorBoundary";
+
+// Loading component
+const CoverLetterLoading = () => (
+  <div className="flex items-center justify-center p-8">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+  </div>
+);
+
 const NewCoverLetter = () => {
   return (
     <div className="container mx-auto py-4">
@@ -22,7 +32,11 @@ const NewCoverLetter = () => {
           </p>
         </div>
       </div>
-      <GenerateCoverLetter />
+      <ErrorBoundary>
+        <Suspense fallback={<CoverLetterLoading />}>
+          <GenerateCoverLetter />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 };

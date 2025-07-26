@@ -5,8 +5,10 @@ import { MessageSquare, X, Send, User, ChevronUp } from "lucide-react";
 import chatBotIcon from "../public/chatbot-icon.png"
 import chatIcon from "../public/chaticon.png"
 import Image from "next/image";
+
 const AIChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -22,6 +24,11 @@ const AIChatbot = () => {
   const inputRef = useRef(null);
   const messagesContainerRef = useRef(null);
 
+  // Prevent hydration issues
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Remove all auto-scroll-to-bottom logic for natural manual scrolling
   // (Remove useEffect that calls scrollToBottom or messagesEndRef.current?.scrollIntoView)
 
@@ -31,6 +38,8 @@ const AIChatbot = () => {
   const startScrollTop = useRef(0);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const container = messagesContainerRef.current;
     if (!container) return;
 
@@ -77,9 +86,11 @@ const AIChatbot = () => {
       container.removeEventListener("touchstart", onTouchStart);
       container.removeEventListener("touchmove", onTouchMove);
     };
-  }, []);
+  }, [mounted]);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const messagesContainer = messagesContainerRef.current;
     if (!messagesContainer) return;
     const handleScroll = () => {
@@ -89,10 +100,12 @@ const AIChatbot = () => {
     };
     messagesContainer.addEventListener('scroll', handleScroll);
     return () => messagesContainer.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [mounted]);
 
   // Prevent background scroll and movement when chatbox is open
   useEffect(() => {
+    if (!mounted) return;
+    
     if (isOpen) {
       document.body.classList.add("overflow-y-hidden", "fixed", "w-full");
     } else {
@@ -101,7 +114,7 @@ const AIChatbot = () => {
     return () => {
       document.body.classList.remove("overflow-y-hidden", "fixed", "w-full");
     };
-  }, [isOpen]);
+  }, [isOpen, mounted]);
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
@@ -160,6 +173,11 @@ const AIChatbot = () => {
       setTimeout(() => inputRef.current?.focus(), 300);
     }
   };
+
+  // Don't render until mounted to prevent hydration issues
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <>

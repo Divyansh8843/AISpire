@@ -3,7 +3,7 @@ import React from "react";
 import { Sparkles, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { jobSchema } from "../../../lib/schema";
+import { jobSchema } from "@/app/lib/schema";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import useFetch from "@/hooks/user-fetch";
@@ -21,6 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 const GenerateCoverLetter = () => {
   const router = useRouter();
   const [coverLetter, setCoverLeter] = useState(null);
@@ -44,24 +45,33 @@ const GenerateCoverLetter = () => {
     fn: generateCoverLetterFn,
     error: generateError,
   } = useFetch(createCoverLetter);
+
   const onSubmit = async (values) => {
     try {
+      if (!values.jobTitle || !values.companyName || !values.jobDescription) {
+        toast.error("Please fill in all required fields");
+        return;
+      }
       await generateCoverLetterFn(values);
     } catch (err) {
       toast.error(err.message || "Failed to generate CoverLetter");
     }
   };
+
   useEffect(() => {
     if (generatedCoverLetter && !generatingCoverLetter) {
       toast.success("CoverLetter generated successfully");
-      router.push(`/cover-letter/${generatedCoverLetter.id}`);
-      router.refresh();
+      if (generatedCoverLetter.id) {
+        router.push(`/cover-letter/${generatedCoverLetter.id}`);
+        router.refresh();
+      }
       reset();
     }
     if (generateError) {
       toast.error(generateError.message || "Failed to generate CoverLetter");
     }
-  }, [generatedCoverLetter, generatingCoverLetter, generateError]);
+  }, [generatedCoverLetter, generatingCoverLetter, generateError, router, reset]);
+
   return (
     <div>
       <Card className="bg-background">

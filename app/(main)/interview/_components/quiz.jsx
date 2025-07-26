@@ -20,6 +20,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
+
 const Quiz = () => {
   const {
     loading: generatingQuiz,
@@ -35,6 +36,7 @@ const Quiz = () => {
   const [ans, setAns] = useState([]);
   const [showExplanation, setShowExplanation] = useState(false);
   const [currQues, setCurrQues] = useState(0);
+
   const handleAnswer = (answer) => {
     const newAns = [...ans];
     newAns[currQues] = answer;
@@ -42,22 +44,25 @@ const Quiz = () => {
   };
 
   const handleNext = () => {
-    if (currQues < quizData.length - 1) {
+    if (quizData && currQues < quizData.length - 1) {
       setCurrQues(currQues + 1);
       setShowExplanation(false);
     } else {
       finishQuiz();
     }
   };
+
   const calculateScore = () => {
+    if (!quizData || !ans) return 0;
     let correct = 0;
     ans.forEach((answer, indx) => {
-      if (answer === quizData[indx].correctAnswer) {
+      if (answer === quizData[indx]?.correctAnswer) {
         correct++;
       }
     });
     return (correct / quizData.length) * 100;
   };
+
   const finishQuiz = async () => {
     const score = calculateScore();
     try {
@@ -71,6 +76,7 @@ const Quiz = () => {
       toast.error(err.message || "Failed to save quiz results");
     }
   };
+
   const startNewQuiz = () => {
     setCurrQues(0);
     setAns([]);
@@ -78,8 +84,9 @@ const Quiz = () => {
     generateQuizFn();
     setResultData(null);
   };
+
   useEffect(() => {
-    if (quizData) {
+    if (quizData && Array.isArray(quizData)) {
       setAns(new Array(quizData.length).fill(null));
     }
   }, [quizData]);
@@ -87,6 +94,7 @@ const Quiz = () => {
   if (generatingQuiz) {
     return <BarLoader className="mt-4 mx-2" width={"100%"} color="gray" />;
   }
+
   if (resultData) {
     return (
       <div className="mx-2">
@@ -94,6 +102,7 @@ const Quiz = () => {
       </div>
     );
   }
+
   if (!quizData) {
     return (
       <Card className="bg-background">
@@ -114,7 +123,51 @@ const Quiz = () => {
       </Card>
     );
   }
+
+  // Safety check for quizData
+  if (!Array.isArray(quizData) || quizData.length === 0) {
+    return (
+      <Card className="bg-background">
+        <CardHeader>
+          <CardTitle>Error Loading Quiz</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground">
+            There was an error loading the quiz. Please try again.
+          </p>
+        </CardContent>
+        <CardFooter>
+          <Button className="w-full" onClick={generateQuizFn}>
+            Retry
+          </Button>
+        </CardFooter>
+      </Card>
+    );
+  }
+
   const question = quizData[currQues];
+  
+  // Safety check for question
+  if (!question || !question.options) {
+    return (
+      <Card className="bg-background">
+        <CardHeader>
+          <CardTitle>Error Loading Question</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground">
+            There was an error loading the question. Please try again.
+          </p>
+        </CardContent>
+        <CardFooter>
+          <Button className="w-full" onClick={generateQuizFn}>
+            Retry
+          </Button>
+        </CardFooter>
+      </Card>
+    );
+  }
+
   return (
     <Card className="mx-2 bg-background">
       <CardHeader>
