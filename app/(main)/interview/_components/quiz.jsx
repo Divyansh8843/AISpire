@@ -180,7 +180,7 @@ const Quiz = () => {
         <RadioGroup
           className="space-y-2"
           onValueChange={handleAnswer}
-          value={ans[currQues]}
+          value={ans[currQues] || ""}
         >
           {question.options?.map((option, indx) => {
             return (

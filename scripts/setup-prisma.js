@@ -10,7 +10,8 @@ try {
   // Generate Prisma client with proper binary targets
   console.log('📦 Generating Prisma client...');
   execSync('npx prisma generate', { 
-    stdio: 'inherit'
+    stdio: 'inherit',
+    env: { ...process.env, PRISMA_GENERATE_SKIP_POSTINSTALL: 'true' }
   });
   
   // Check if we're in production
