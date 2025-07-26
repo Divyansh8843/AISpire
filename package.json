@@ -1,15 +1,20 @@
 {
-  "name": "invoice-generator",
-  "version": "0.1.0",
+  "name": "ai-career-coach",
+  "version": "1.0.0",
   "private": true,
+  "description": "An intelligent career coaching platform that helps you build resumes, create cover letters, and ace interviews with AI-powered assistance",
+  "author": "Divyansh Agrawal",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "node scripts/setup-prisma.js && next build",
     "start": "next start",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:deploy": "prisma migrate deploy"
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.25.4",
